@@ -9,7 +9,7 @@ public class Main {
 		ApartamentoBO.createApBlocoA();
 		ApartamentoBO.createApBlocoB();
 		Menu menu = new Menu();
-		menu.menu();
+		menu.iniciar();
 	}
 
 }

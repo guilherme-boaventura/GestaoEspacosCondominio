@@ -1,10 +1,10 @@
 package business;
 
-import data.GarageBand;
-import data.Morador;
-import data.Quadra;
-import data.Reserva;
-import data.SalaoDeFestas;
+import domain.GarageBand;
+import domain.Morador;
+import domain.Quadra;
+import domain.Reserva;
+import domain.SalaoDeFestas;
 
 public class ReservaBO {
 	
@@ -18,12 +18,12 @@ public class ReservaBO {
 	}
 	
 	public void createReservaSalao (Morador morador, int dia, int mes, int ano, int id) {
-		Reserva rsv = new Reserva(morador, quadra, dia, mes, ano, id);
+		Reserva rsv = new Reserva(morador, salao, dia, mes, ano, id);
 		salao.setReserva(rsv);
 	}
 	
 	public void createReservaGarage (Morador morador, int dia, int mes, int ano, int id) {
-		Reserva rsv = new Reserva(morador, quadra, dia, mes, ano, id);
+		Reserva rsv = new Reserva(morador, gband, dia, mes, ano, id);
 		gband.setReserva(rsv);
 	}
 }

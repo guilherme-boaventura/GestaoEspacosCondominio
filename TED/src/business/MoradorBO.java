@@ -1,7 +1,8 @@
 package business;
 
 import java.util.ArrayList;
-import data.*;
+
+import domain.*;
 
 public class MoradorBO {
 	public static ArrayList<Morador> moradores = new ArrayList<>();
