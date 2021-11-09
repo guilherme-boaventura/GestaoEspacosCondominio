@@ -2,46 +2,60 @@ package tui;
 
 import java.time.LocalDate;
 import java.util.Scanner;
-
 import business.MoradorBO;
-import data.Espaco;
-import data.Morador;
+import domain.*;
+
 
 public class Menu {
 
-	LocalDate data = LocalDate.parse("2021-11-08");
+	LocalDate data = LocalDate.now();
 	int cadIndex;
 	int dia;
 	int mes;
 	int ano;
 	int id;
-
-	public void menu() {
-		System.out.println("1- Cadastrar morador\n"
-				+  "2- Reservar quadra\n"
-				+  "3- Reservar Garage band\n"
-				+  "4- Reservar Salão de festas");
-		choice();
+	
+	public void iniciar() {
+		OpcaoMenuEnum opcao;
+		do {
+		opcoes();
+		opcao = escolha();
+		executarOpcao(opcao);
+		}while(!opcao.equals(OpcaoMenuEnum.SAIR));
 	}
 
-	private void choice() {
+	private void opcoes() {
+		System.out.println("-----------------MENU-----------------");
+		for (OpcaoMenuEnum opcao : OpcaoMenuEnum.values()) {
+			System.out.println(opcao.getCodeTxt());
+		}
+		System.out.println("Insira a opção que deseja:");
+	}
+
+	private OpcaoMenuEnum escolha() {
 		Scanner sc = new Scanner(System.in);
-		int key = sc.nextInt();
-		while(key<1 || key>4) {
+		int opcao = sc.nextInt();
+		while(opcao<1 || opcao>5) {
 			System.out.println("Opção inválida, insira novamente: ");
-			key = sc.nextInt();
+			opcao = sc.nextInt();
 		}
 		System.out.println();
-		switch (key) {
-		case 1:
+		return OpcaoMenuEnum.valueOfInt(opcao);
+		
+	}
+	
+	private void executarOpcao(OpcaoMenuEnum opcao) {
+		switch (opcao) {
+		case CADASTRAR_MORADOR:
+			System.out.println("----------CADASTRO DE MORADOR----------");
 			Morador morador = MoradorBO.cadastrarMorador();
 			System.out.println("Cadastro concluído!");
 			System.out.println("Seu cadastro é o número " + MoradorBO.moradores.indexOf(morador));
 			System.out.println();
-			menu();
 			break;
 
-		case 2:
+		case RESERVAR_QUADRA:
+			System.out.println("------------RESERVA QUADRA------------");
 			cadIndex = cadIndex();
 			ano = anoReserva();
 			mes = mesReserva(ano);
@@ -53,10 +67,9 @@ public class Menu {
 														+ Espaco.reservas.get(id-1).getAno());
 			System.out.println("O ID da sua reserva é: " + id);
 			System.out.println();
-			menu();
 			break;
 
-		case 3: 
+		case RESERVAR_GBAND: 
 			cadIndex = cadIndex();
 			ano = anoReserva();
 			mes = mesReserva(ano);
@@ -68,10 +81,9 @@ public class Menu {
 														+ Espaco.reservas.get(id-1).getAno());
 			System.out.println("O ID da sua reserva é: " + id);
 			System.out.println();
-			menu();
 			break;
 
-		case 4: 
+		case RESERVAR_SALAO: 
 			cadIndex = cadIndex();
 			ano = anoReserva();
 			mes = mesReserva(ano);
@@ -83,8 +95,17 @@ public class Menu {
 														+ Espaco.reservas.get(id-1).getAno());
 			System.out.println("O ID da sua reserva é: " + id);
 			System.out.println();
-			menu();
 			break;	
+			
+		case LISTA_DE_RESERVAS:
+			listarReservas();
+			break;
+		
+		case SAIR:
+			System.out.println();
+			System.out.println("Até mais...");
+			System.exit(0);
+			break;
 		}
 	}
 
@@ -108,8 +129,8 @@ public class Menu {
 		int ano = sc.nextInt();
 		System.out.println();
 		while(ano < data.getYear() || ano > data.getYear()+1) {
-			System.out.println("Ano inválido, reservas disponíveis apenas para " + data.getYear() + " e " + data.getYear()+1 + 
-					"\nInsira novamente:");
+			System.out.println("Ano inválido, reservas disponíveis apenas para " + data.getYear() + " e " + (data.getYear()+1) + 
+								"\nInsira novamente:");
 			ano = sc.nextInt();
 			System.out.println();
 		}
@@ -189,5 +210,32 @@ public class Menu {
 		System.out.println("Qual o apartamento desse morador?");
 		int ap = sc.nextInt();
 		return ap;
+	}
+	
+	private void listarReservas() {
+		System.out.println("------------LISTA DE RESERVAS------------");
+		System.out.println("Reservas da quadra:");
+		for (int i = 0; i < Espaco.reservas.size(); i++) {
+			Reserva rsv = Espaco.reservas.get(i);
+			if(rsv.getEspaco() instanceof Quadra) {
+				System.out.println(rsv.getMorador().getNome() + " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
+			}
+		}
+		System.out.println();
+		System.out.println("Reservas da garage band:");
+		for (int i = 0; i < Espaco.reservas.size(); i++) {
+			Reserva rsv = Espaco.reservas.get(i);
+			if(rsv.getEspaco() instanceof GarageBand) {
+				System.out.println(rsv.getMorador().getNome() + " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
+			}
+		}
+		System.out.println();
+		System.out.println("Reservas do salão de festas:");
+		for (int i = 0; i < Espaco.reservas.size(); i++) {
+			Reserva rsv = Espaco.reservas.get(i);
+			if(rsv.getEspaco() instanceof SalaoDeFestas) {
+				System.out.println(rsv.getMorador().getNome() + " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
+			}
+		}
 	}
 }

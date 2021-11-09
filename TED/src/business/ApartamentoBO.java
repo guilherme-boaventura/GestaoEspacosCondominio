@@ -2,7 +2,7 @@ package business;
 
 import java.util.ArrayList;
 
-import data.Apartamento;
+import domain.Apartamento;
 
 public class ApartamentoBO {
 	
