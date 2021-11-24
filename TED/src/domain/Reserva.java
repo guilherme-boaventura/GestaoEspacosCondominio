@@ -20,12 +20,17 @@ public class Reserva {
 	public Espaco getEspaco() {
 		return espaco;
 	}
+	
 	public void setEspaco(Espaco espaco) {
 		this.espaco = espaco;
 	}
+	
 	public Morador getMorador() {
 		return morador;
 	}
+	
+	
+	
 	public void setMorador(Morador morador) {
 		this.morador = morador;
 	}
