@@ -129,6 +129,10 @@ public class Menu {
 		case LISTA_DE_RESERVAS:
 			listarReservas();
 			break;
+			
+		case LISTA_DE_MORADORES:
+			listarMoradores();
+			break;
 
 		case CANCELAR_RESERVA:
 			if(cancelarReserva()) {
@@ -265,6 +269,15 @@ public class Menu {
 				System.out.println(rsv.getMorador().getNome() + " " + rsv.getMorador().getApartamento() + rsv.getMorador().getBloco().toUpperCase()
 						+ " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
 			}
+		}
+		System.out.println();
+	}
+	
+	private void listarMoradores() {
+		System.out.println("------------LISTA DE MORADORES------------");
+		for (int i = 0; i < MoradorBO.moradores.size(); i++) {
+			System.out.println(MoradorBO.moradores.get(i).getNome() + " " + MoradorBO.moradores.get(i).getApartamento() + MoradorBO.moradores.get(i).getBloco().toUpperCase()
+					+ " - Cadastro: " + MoradorBO.moradores.indexOf(MoradorBO.moradores.get(i)));
 		}
 		System.out.println();
 	}

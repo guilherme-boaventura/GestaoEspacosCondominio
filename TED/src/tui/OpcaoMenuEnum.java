@@ -6,7 +6,8 @@ public enum OpcaoMenuEnum {
 	RESERVAR_GBAND (3, " - Reservar Garage band"), 
 	RESERVAR_SALAO(4, " - Reservar Salão de festas"), 
 	LISTA_DE_RESERVAS(5, " - Lista de reservas"),
-	CANCELAR_RESERVA(6," - Cancelar reserva"),
+	LISTA_DE_MORADORES(6, " - Lista de moradores"),
+	CANCELAR_RESERVA(7," - Cancelar reserva"),
 	SAIR(9, " - Sair");
 	
 	private final Integer CODE;
