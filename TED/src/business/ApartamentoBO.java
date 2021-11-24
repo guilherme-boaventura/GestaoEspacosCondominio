@@ -6,6 +6,8 @@ import domain.Apartamento;
 
 public class ApartamentoBO {
 	
+	private ApartamentoBO() {}
+	
 	static ArrayList<Apartamento> blocoA = new ArrayList<>();
 	static ArrayList<Apartamento> blocoB = new ArrayList<>();
 	

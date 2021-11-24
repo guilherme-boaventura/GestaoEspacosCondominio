@@ -14,13 +14,13 @@ public class Menu {
 	int mes;
 	int ano;
 	int id;
-	
+
 	public void iniciar() {
 		OpcaoMenuEnum opcao;
 		do {
-		opcoes();
-		opcao = escolha();
-		executarOpcao(opcao);
+			opcoes();
+			opcao = escolha();
+			executarOpcao(opcao);
 		}while(!opcao.equals(OpcaoMenuEnum.SAIR));
 	}
 
@@ -35,15 +35,14 @@ public class Menu {
 	private OpcaoMenuEnum escolha() {
 		Scanner sc = new Scanner(System.in);
 		int opcao = sc.nextInt();
-		while(opcao<1 || opcao>5) {
+		while((opcao < 1 || opcao > 6) && opcao != 9) {
 			System.out.println("Opção inválida, insira novamente: ");
 			opcao = sc.nextInt();
 		}
 		System.out.println();
-		return OpcaoMenuEnum.valueOfInt(opcao);
-		
+		return OpcaoMenuEnum.valueOfInt(opcao);	
 	}
-	
+
 	private void executarOpcao(OpcaoMenuEnum opcao) {
 		switch (opcao) {
 		case CADASTRAR_MORADOR:
@@ -60,53 +59,71 @@ public class Menu {
 			ano = anoReserva();
 			mes = mesReserva(ano);
 			dia = diaReserva(ano, mes);
-			id = Espaco.reservas.size() + 1;
+			id = checkId(Espaco.reservas.size() + 1);
 			MoradorBO.moradores.get(cadIndex).reservarQuadra(MoradorBO.moradores.get(cadIndex), dia, mes, ano, id);
 			System.out.println("Reserva agendada para " + Espaco.reservas.get(id-1).getDia() + "/"
-														+ Espaco.reservas.get(id-1).getMes() + "/"
-														+ Espaco.reservas.get(id-1).getAno());
+					+ Espaco.reservas.get(id-1).getMes() + "/"
+					+ Espaco.reservas.get(id-1).getAno());
 			System.out.println("O ID da sua reserva é: " + id);
 			System.out.println();
 			break;
 
 		case RESERVAR_GBAND: 
+			System.out.println("-------------RESERVA GBAND-------------");
 			cadIndex = cadIndex();
 			ano = anoReserva();
 			mes = mesReserva(ano);
 			dia = diaReserva(ano, mes);
-			id = Espaco.reservas.size() + 1;
+			id = checkId(Espaco.reservas.size() + 1);
 			MoradorBO.moradores.get(cadIndex).reservarGarage(MoradorBO.moradores.get(cadIndex), dia, mes, ano, id);
 			System.out.println("Reserva agendada para " + Espaco.reservas.get(id-1).getDia() + "/"
-														+ Espaco.reservas.get(id-1).getMes() + "/"
-														+ Espaco.reservas.get(id-1).getAno());
+					+ Espaco.reservas.get(id-1).getMes() + "/"
+					+ Espaco.reservas.get(id-1).getAno());
 			System.out.println("O ID da sua reserva é: " + id);
 			System.out.println();
 			break;
 
 		case RESERVAR_SALAO: 
+			System.out.println("-------------RESERVA SALAO-------------");
 			cadIndex = cadIndex();
 			ano = anoReserva();
 			mes = mesReserva(ano);
 			dia = diaReserva(ano, mes);
-			id = Espaco.reservas.size() + 1;
+			id = checkId(Espaco.reservas.size() + 1);
 			MoradorBO.moradores.get(cadIndex).reservarSalao(MoradorBO.moradores.get(cadIndex), dia, mes, ano, id);
 			System.out.println("Reserva agendada para " + Espaco.reservas.get(id-1).getDia() + "/"
-														+ Espaco.reservas.get(id-1).getMes() + "/"
-														+ Espaco.reservas.get(id-1).getAno());
+					+ Espaco.reservas.get(id-1).getMes() + "/"
+					+ Espaco.reservas.get(id-1).getAno());
 			System.out.println("O ID da sua reserva é: " + id);
 			System.out.println();
 			break;	
-			
+
 		case LISTA_DE_RESERVAS:
 			listarReservas();
 			break;
-		
+
+		case CANCELAR_RESERVA:
+			if(cancelarReserva()) {
+				System.out.println("Reserva cancelada com sucesso!");
+				System.out.println();
+			}
+			break;
+
 		case SAIR:
 			System.out.println();
 			System.out.println("Até mais...");
 			System.exit(0);
 			break;
 		}
+	}
+
+	private int checkId(int id) {
+		for (int i = 0; i < Espaco.reservas.size(); i++) {
+			if(id == Espaco.reservas.size()) {
+				id = id + 1;
+			}
+		}
+		return id;
 	}
 
 	private int cadIndex() {
@@ -130,7 +147,7 @@ public class Menu {
 		System.out.println();
 		while(ano < data.getYear() || ano > data.getYear()+1) {
 			System.out.println("Ano inválido, reservas disponíveis apenas para " + data.getYear() + " e " + (data.getYear()+1) + 
-								"\nInsira novamente:");
+					"\nInsira novamente:");
 			ano = sc.nextInt();
 			System.out.println();
 		}
@@ -198,27 +215,14 @@ public class Menu {
 		return dia;
 	}
 
-	public String nameInput() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Insira o nome do morador que deseja reservar:");
-		String nome = sc.nextLine();
-		return nome;
-	}
-
-	public static int apInput() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Qual o apartamento desse morador?");
-		int ap = sc.nextInt();
-		return ap;
-	}
-	
 	private void listarReservas() {
 		System.out.println("------------LISTA DE RESERVAS------------");
 		System.out.println("Reservas da quadra:");
 		for (int i = 0; i < Espaco.reservas.size(); i++) {
 			Reserva rsv = Espaco.reservas.get(i);
 			if(rsv.getEspaco() instanceof Quadra) {
-				System.out.println(rsv.getMorador().getNome() + " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
+				System.out.println(rsv.getMorador().getNome() + " " + rsv.getMorador().getApartamento() + rsv.getMorador().getBloco().toUpperCase()
+						+ " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
 			}
 		}
 		System.out.println();
@@ -226,7 +230,8 @@ public class Menu {
 		for (int i = 0; i < Espaco.reservas.size(); i++) {
 			Reserva rsv = Espaco.reservas.get(i);
 			if(rsv.getEspaco() instanceof GarageBand) {
-				System.out.println(rsv.getMorador().getNome() + " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
+				System.out.println(rsv.getMorador().getNome() + " " + rsv.getMorador().getApartamento() + rsv.getMorador().getBloco().toUpperCase()
+						+ " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
 			}
 		}
 		System.out.println();
@@ -234,8 +239,47 @@ public class Menu {
 		for (int i = 0; i < Espaco.reservas.size(); i++) {
 			Reserva rsv = Espaco.reservas.get(i);
 			if(rsv.getEspaco() instanceof SalaoDeFestas) {
-				System.out.println(rsv.getMorador().getNome() + " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
+				System.out.println(rsv.getMorador().getNome() + " " + rsv.getMorador().getApartamento() + rsv.getMorador().getBloco().toUpperCase()
+						+ " | " + rsv.getDia() + "-" + rsv.getMes() + "-" + rsv.getAno() + " | ID = " + rsv.getId());
 			}
 		}
+		System.out.println();
+	}
+
+	private boolean cancelarReserva() {
+		Reserva  rsv = null;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Insira o ID da reserva que deseja cancelar");
+		int id = sc.nextInt();
+		for (int i = 0; i < Espaco.reservas.size(); i++) {
+			if(Espaco.reservas.get(i).getId() == id) {
+				rsv = Espaco.reservas.get(i);
+			}
+		}
+		if(confirmarCpf(rsv)) {
+			Espaco.reservas.remove(rsv);
+			return true;
+		}else {
+			System.out.println("Não foi possível validar o CPF, retorne mais tarde com o dado correto.");
+			return false;
+		}
+	}
+
+	private boolean confirmarCpf(Reserva rsv) {
+		int counter = 0;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Confirme o CPF do morador a realizar a ação:");
+		double cpf = sc.nextDouble();
+		while(cpf != Double.valueOf(rsv.getMorador().getCpf())) {
+			System.out.println("CPF divergente, insira novamente:");
+			cpf = sc.nextDouble();
+			if(cpf != Double.valueOf(rsv.getMorador().getCpf())) {
+				counter++;
+			}
+			if(counter == 3) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import domain.*;
 
 public class MoradorBO {
+	
+	private MoradorBO() {}
+
 	public static ArrayList<Morador> moradores = new ArrayList<>();
 
 	public static Morador cadastrarMorador() {
@@ -14,7 +17,7 @@ public class MoradorBO {
 	}
 
 	public static Apartamento setApartamentoAux(int num, String bloco) {
-		if(bloco.equalsIgnoreCase("a"))
+		if(bloco.equalsIgnoreCase("a")) 
 			for (int i = 0; i < ApartamentoBO.blocoA.size(); i++) {
 				if(ApartamentoBO.blocoA.get(i).getNumero() == num) {
 					return ApartamentoBO.blocoA.get(i);
