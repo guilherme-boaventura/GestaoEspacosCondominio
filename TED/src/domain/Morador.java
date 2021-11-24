@@ -5,86 +5,93 @@ import business.*;
 
 public class Morador {
 
-		private String nome;
-		private String cpf;
-		private Apartamento apartamento;
-		private String bloco;
-		
-		public Morador() {
-			setNome();
-			setCpf();
-			setBloco();
-			setApartamento();
-		}
-		
-		public void reservarSalao(Morador morador, int dia, int mes, int ano, int id) {
-			ReservaBO reservaBO = new ReservaBO();
-			reservaBO.createReservaSalao(morador, dia, mes, ano, id);
-		}
-		
-		public void reservarQuadra(Morador morador, int dia, int mes, int ano, int id) {
-			ReservaBO reservaBO = new ReservaBO();
-			reservaBO.createReservaQuadra(morador, dia, mes, ano, id);
-		}
-		
-		public void reservarGarage(Morador morador, int dia, int mes, int ano, int id) {
-			ReservaBO reservaBO = new ReservaBO();
-			reservaBO.createReservaGarage(morador, dia, mes, ano, id);
-		}
+	private String nome;
+	private String cpf;
+	private Apartamento apartamento;
+	private String bloco;
 
-		public String getNome() {
-			return nome;
-		}
+	public Morador() {
+		setNome();
+		setCpf();
+		setBloco();
+		setApartamento();
+	}
 
-		public void setNome() {
-			Scanner sc = new Scanner(System.in);
-			System.out.println("Qual o nome do morador?");
-			this.nome = sc.nextLine();
-			System.out.println();
-		}
+	public void reservarSalao(Morador morador, int dia, int mes, int ano, int id) {
+		ReservaBO.createReservaSalao(morador, dia, mes, ano, id);
+	}
 
-		public String getCpf() {
-			return cpf;
-		}
+	public void reservarQuadra(Morador morador, int dia, int mes, int ano, int id) {
+		ReservaBO.createReservaQuadra(morador, dia, mes, ano, id);
+	}
 
-		public void setCpf() {
-			Scanner sc = new Scanner(System.in);
-			System.out.println("Qual o CPF do morador?");
-			this.cpf = sc.nextLine();
-			System.out.println();
-		}
+	public void reservarGarage(Morador morador, int dia, int mes, int ano, int id) {
+		ReservaBO.createReservaGarage(morador, dia, mes, ano, id);
+	}
 
-		public int getApartamento() {
-			return apartamento.getNumero();
-		}
+	public String getNome() {
+		return nome;
+	}
 
-		public void setApartamento() {
-			Scanner sc = new Scanner(System.in);
-			System.out.println("Em qual o apartamento?");
-			int numero = sc.nextInt();
+	public void setNome() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Qual o nome do morador?");
+		this.nome = sc.nextLine();
+		System.out.println();
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(){
+		boolean keepLooping = true;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Qual o CPF do morador?");
+		this.cpf = sc.nextLine();
+		while(keepLooping) {
+			try {
+				Double.valueOf(this.cpf);
+				keepLooping = false;
+			} catch (Exception e) {
+				System.out.println("CPF inválido, insira apenas números:");
+				this.cpf = sc.nextLine();
+			}
+		}
+		System.out.println();
+	}
+
+	public int getApartamento() {
+		return apartamento.getNumero();
+	}
+
+	public void setApartamento() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Em qual apartamento?");
+		int numero = sc.nextInt();
+		System.out.println();
+		this.apartamento = MoradorBO.setApartamentoAux(numero, this.bloco);
+		while(this.apartamento == (null)) {
+			System.out.println("Apartamento inexistente, insira novamente:");
+			numero = sc.nextInt();
 			System.out.println();
 			this.apartamento = MoradorBO.setApartamentoAux(numero, this.bloco);
-			while(this.apartamento == (null)) {
-				System.out.println("Apartamento inexistente, insira novamente:");
-				numero = sc.nextInt();
-				System.out.println();
-				this.apartamento = MoradorBO.setApartamentoAux(numero, this.bloco);
-			}
 		}
+	}
 
-		public String getBloco() {
-			return bloco;
-		}
-
-		public void setBloco() {
-			Scanner sc = new Scanner(System.in);
-			System.out.println("O Morador reside no bloco A ou B?");
+	public String getBloco() {
+		return bloco;
+	}
+	
+	public void setBloco() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("O Morador reside no bloco A ou B?");
+		this.bloco = sc.next();
+		System.out.println();
+		while(!(this.bloco.equalsIgnoreCase("a") || this.bloco.equalsIgnoreCase("b"))) {
+			System.out.println("Bloco inexistente, insira novamente:");
 			this.bloco = sc.next();
 			System.out.println();
-			while(!(this.bloco.equalsIgnoreCase("a") || this.bloco.equalsIgnoreCase("b"))) {
-				System.out.println("Bloco inexistente, insira novamente:");
-				this.bloco = sc.next();
-				System.out.println();
-			}
 		}
+	}
 }
